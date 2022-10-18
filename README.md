@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# Простое приложение с использованием Redux
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Для запуска
 
-## Available Scripts
+`npm install` 
 
-In the project directory, you can run:
+`npm start`
 
-### `npm start`
+Для загрузки списка клиентов используется Redux Thunk и [Fake API](https://jsonplaceholder.typicode.com/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Основы Redux
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Действие** (Action) — это объект, содержащий поле type, которое указывает на тип исполняемого экшена (обычно в виде строковой константы). Сам экшен только описывает, что именно произошло, но не описывает, как изменяется состояние приложения.
 
-### `npm test`
+**Хранилище** (Store) — это объект, который хранит состояние нашего приложения (application state).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Редюсер** (Reducer) — это чистая функция, которая принимает предыдущее состояние и экшн (state и action) и возвращает обновлённое состояние. Т.е. редюсеры определяют, как состояние приложения изменяется в ответ на экшены, отправленные в стор.
 
-### `npm run build`
+### Data Flow (четыре шага)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**1. Вызов** `store.dispatch(action)`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Экшен — это простой объект, который описывает что случилось:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+{ type: 'LIKE_ARTICLE', articleId: 42 }
+{ type: 'FETCH_USER_SUCCESS', response: { id: 3, name: 'Mary' } }
+{ type: 'ADD_TODO', text: 'Read the Redux docs.' }
+```
+**2. Стор** вызывает функцию-редюсер, который был передан
 
-### `npm run eject`
+Стор передаст два аргумента при вызове редюсера: текущее состояние и экшен.
+```
+Редюсер — это чистая функция. Он не должен совершать никаких сайд-эффектов, таких как обращение к API 
+или маршрутизация по приложению. Всё это должно происходить только после того, как экшен будет совершён.
+```
+**3. Главный редюсер** может комбинировать результат работы нескольких редюсеров в единственное дерево состояния приложения.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Redux поставляется с хелпером `combineReducers`, полезным для «разделения» главного редюсера на отдельные функции, которые управляют отдельными ветвями дерева состояния.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**4. Cтор** сохраняет полное дерево состояния, которое возвращает главный редюсер.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Это новое дерево является следующим состоянием приложения. Каждый слушатель, зарегистрированный с помощью `store.subscribe(listener)`, будет вызван. Слушатели могут вызывать `store.getState()` для получения текущего состояния приложения.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+![image](https://user-images.githubusercontent.com/64479736/196452499-2ce77b0f-4937-410c-bbda-0b1d18e7b335.png)
 
-## Learn More
+### Middleware
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Мидлвары** в Redux — это функции, которые перехватывают действия (логгер, девтулзы, асинхронное общение с API, роутинг). Это удобно, потому что по умолчанию экшены в Redux являются синхронными, что является проблемой для приложения, которому нужно взаимодействовать с серверным API или выполнять другие асинхронные действия.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Популярные мидлвары: `redux-thunk`, `redux-saga`.
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
