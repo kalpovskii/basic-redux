@@ -1,5 +1,7 @@
 # Простое приложение с использованием Redux
 
+https://kalpovskii.github.io/basic-redux/
+
 ## Для запуска
 
 `npm install` 
