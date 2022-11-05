@@ -1,16 +1,20 @@
-# Простое приложение с использованием Redux
+### Простое приложение с использованием Redux
 
 https://kalpovskii.github.io/basic-redux/
 
-## Для запуска
+#### Использованы
+* Action `ADD_CASH` и `GET_CASH` для кнопок пополнить и снять соответственно
+* Функция combineReducers для хранения cash- и customerReducer в едином store
+* Action `ADD_CUSTOMER` и `REMOVE_CUSTOMER` для добавления и удаления пользователей
+* [Jsonplaceholder](https://jsonplaceholder.typicode.com/) и Redux Thunk для запроса списка пользователей
+
+### Для запуска
 
 `npm install` 
 
 `npm start`
 
-Для загрузки списка клиентов используется Redux Thunk и [Fake API](https://jsonplaceholder.typicode.com/)
-
-## Основы Redux
+### Основы Redux
 
 **Действие** (Action) — это объект, содержащий поле type, которое указывает на тип исполняемого экшена (обычно в виде строковой константы). Сам экшен только описывает, что именно произошло, но не описывает, как изменяется состояние приложения.
 
